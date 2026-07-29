@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->enum('role', ['superadmin', 'admin', 'siswa', 'alumni'])->default('siswa');
+            $table->string('nisn', 20)->nullable();
+            $table->year('tahun_lulus')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

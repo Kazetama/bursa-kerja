@@ -7,10 +7,26 @@ test('guests are redirected to the login page', function () {
     $response->assertRedirect(route('login'));
 });
 
-test('authenticated users can visit the dashboard', function () {
-    $user = User::factory()->create();
+test('authenticated users are redirected to their role dashboard', function () {
+    $user = User::factory()->create(['role' => 'siswa']);
     $this->actingAs($user);
 
     $response = $this->get(route('dashboard'));
+    $response->assertRedirect(route('siswa.dashboard'));
+});
+
+test('authenticated users can visit their role dashboard', function () {
+    $user = User::factory()->create(['role' => 'siswa']);
+    $this->actingAs($user);
+
+    $response = $this->get(route('siswa.dashboard'));
+    $response->assertOk();
+});
+
+test('superadmin can visit superadmin dashboard', function () {
+    $superadmin = User::factory()->create(['role' => 'superadmin']);
+    $this->actingAs($superadmin);
+
+    $response = $this->get(route('superadmin.dashboard'));
     $response->assertOk();
 });
